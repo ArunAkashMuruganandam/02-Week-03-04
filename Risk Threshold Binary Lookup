@@ -1,0 +1,109 @@
+public class RiskThresholdSearch {
+
+   
+    public static void linearSearch(int[] arr, int target) {
+        int comparisons = 0;
+        boolean found = false;
+
+        for (int i = 0; i < arr.length; i++) {
+            comparisons++;
+            if (arr[i] == target) {
+                found = true;
+                System.out.println("Found at index: " + i);
+                break;
+            }
+        }
+
+        if (!found) {
+            System.out.println("Not Found");
+        }
+
+        System.out.println("Comparisons: " + comparisons);
+        System.out.println("Time Complexity: O(n)");
+        System.out.println();
+    }
+
+    
+    public static int findFloor(int[] arr, int target, int[] comps) {
+        int low = 0, high = arr.length - 1;
+        int floor = -1;
+
+        while (low <= high) {
+            comps[0]++;
+            int mid = (low + high) / 2;
+
+            if (arr[mid] == target) {
+                return arr[mid];
+            } else if (arr[mid] < target) {
+                floor = arr[mid]; // possible answer
+                low = mid + 1;
+            } else {
+                high = mid - 1;
+            }
+        }
+        return floor;
+    }
+
+    
+    public static int findCeiling(int[] arr, int target, int[] comps) {
+        int low = 0, high = arr.length - 1;
+        int ceil = -1;
+
+        while (low <= high) {
+            comps[0]++;
+            int mid = (low + high) / 2;
+
+            if (arr[mid] == target) {
+                return arr[mid];
+            } else if (arr[mid] > target) {
+                ceil = arr[mid]; // possible answer
+                high = mid - 1;
+            } else {
+                low = mid + 1;
+            }
+        }
+        return ceil;
+    }
+
+   
+    public static int insertionPoint(int[] arr, int target, int[] comps) {
+        int low = 0, high = arr.length;
+
+        while (low < high) {
+            comps[0]++;
+            int mid = (low + high) / 2;
+
+            if (arr[mid] < target) {
+                low = mid + 1;
+            } else {
+                high = mid;
+            }
+        }
+        return low;
+    }
+
+   
+    public static void main(String[] args) {
+
+        int[] unsorted = {50, 10, 100, 25}; // for linear search
+        int[] sorted = {10, 25, 50, 100};   // required for binary
+
+        int target = 30;
+
+        System.out.println("Linear Search (Unsorted):");
+        linearSearch(unsorted, target);
+
+        int[] comps = {0};
+
+        int floor = findFloor(sorted, target, comps);
+        int ceil = findCeiling(sorted, target, comps);
+        int insert = insertionPoint(sorted, target, comps);
+
+        System.out.println("Binary Search (Sorted):");
+        System.out.println("Floor (≤ target): " + floor);
+        System.out.println("Ceiling (≥ target): " + ceil);
+        System.out.println("Insertion Index: " + insert);
+        System.out.println("Comparisons: " + comps[0]);
+        System.out.println("Time Complexity: O(log n)");
+    }
+}
